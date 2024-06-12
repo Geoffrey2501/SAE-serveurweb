@@ -12,9 +12,12 @@ public class Serveur {
             ServeurHTTP serveur = new ServeurHTTP();
             while (true) {
                 s = serveur.serverSocket.accept();
+                System.out.println(s.getInetAddress().toString());
+                if(serveur.validerConnexion(s.getInetAddress().getHostAddress()))s.close();
                 BufferedReader read = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 serveur.envoyer(read.readLine(), s);
-                read.close();
+
+
             }
         } catch (IOException e) {
             e.printStackTrace();
