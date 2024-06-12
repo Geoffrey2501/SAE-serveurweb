@@ -8,6 +8,8 @@ public class ServeurHTTP {
     Socket s;
     byte[] page;
     ServerSocket serverSocket;
+    Log acces;
+    Log erreur;
     /**
      * Le masque des différents ip accepté ou refusé
      */
@@ -28,6 +30,10 @@ public class ServeurHTTP {
     byte[] ipOK;
     byte[] ipBan;
 
+    /**
+     * constructeur de la classe
+     * @throws IOException
+     */
     public ServeurHTTP() throws IOException {
         this.lireConfig("etc/myweb/config.xml");
     }
@@ -41,6 +47,7 @@ public class ServeurHTTP {
     public void envoyer(String s, Socket soc) throws IOException {
         String res = s.replace("GET /", "").replace(" HTTP/1.1", "").trim();
         FileInputStream r = null;
+        this.addLogin(soc.toString(), res);
         try {
             if (res.isEmpty()) r = new FileInputStream("etc/index.html");
             else r = new FileInputStream("etc/" + res);
@@ -76,7 +83,8 @@ public class ServeurHTTP {
         this.ipOK = this.toBinaire(info[2].split("/")[0]);;
         this.ipBan =this.toBinaire(info[3].split("/")[0]);
         this.serverSocket = new ServerSocket(this.port);
-
+        this.acces = new Log(info[4]);
+        this.erreur = new Log(info[5]);
         int m = Integer.parseInt(info[2].split("/")[1]);
         for (int j= 0; j<masque.length;j++){
             if (j<m)masque[j] = 1;
@@ -102,6 +110,13 @@ public class ServeurHTTP {
             }
         }
         return true;
+    }
+
+    public void addLogin(String ip, String page) throws IOException {
+        this.acces.ajout(ip +" "+ page);
+    }
+    public void addError(String error) throws IOException {
+        this.erreur.ajout(error);
     }
 
 
