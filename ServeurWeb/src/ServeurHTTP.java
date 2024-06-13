@@ -53,7 +53,7 @@ public class ServeurHTTP {
             if (res.isEmpty()) name = "etc/index.html";
             else name = "etc/" + res;
 
-            LireDisque.ecrireInfo(name);
+            if (name.equals("etc/status")) LireDisque.ecrireInfo(name);
             r = new FileInputStream(name);
             DataOutputStream out = new DataOutputStream(soc.getOutputStream());
             int byteRead;
