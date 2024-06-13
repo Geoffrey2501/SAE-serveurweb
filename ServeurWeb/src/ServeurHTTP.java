@@ -10,6 +10,7 @@ public class ServeurHTTP {
     ServerSocket serverSocket;
     Log acces;
     Log erreur;
+    Convertisseur c;
     /**
      * Le masque des différents ip accepté ou refusé
      */
@@ -36,6 +37,7 @@ public class ServeurHTTP {
      */
     public ServeurHTTP() throws IOException {
         this.lireConfig("etc/myweb/config.xml");
+        this.c = new Convertisseur();
     }
 
     /**
@@ -52,17 +54,31 @@ public class ServeurHTTP {
             String name;
             if (res.isEmpty()) name = "etc/index.html";
             else name = "etc/" + res;
+            System.out.println(soc.isClosed());
 
-            LireDisque.ecrireInfo(name);
-            r = new FileInputStream(name);
-            DataOutputStream out = new DataOutputStream(soc.getOutputStream());
-            int byteRead;
-            while ((byteRead = r.read()) != -1) {
-                out.write(byteRead);
-                out.flush();
+
+            if (name.equals("etc/status"))LireDisque.ecrireInfo(name);
+
+            if(name.contains("mp3") || name.contains("mp4") || name.contains("img") || name.contains("jpg") || name.contains("jpeg") || name.contains("ico")){
+                String fichierEncoder =this.c.convertir(name);
+                System.out.println(fichierEncoder);
+                soc.getOutputStream().write(fichierEncoder.getBytes());
+                soc.getOutputStream().flush();
+                soc.getOutputStream().close();
             }
-            out.close();
-            r.close();
+            else {
+                r = new FileInputStream(name);
+                DataOutputStream out = new DataOutputStream(soc.getOutputStream());
+                int byteRead;
+                while ((byteRead = r.read()) != -1) {
+                    out.write(byteRead);
+                    out.flush();
+                }
+                out.close();
+                r.close();
+            }
+
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

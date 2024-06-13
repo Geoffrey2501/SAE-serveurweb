@@ -22,18 +22,10 @@ public class Serveur {
                     BufferedReader read = new BufferedReader(new InputStreamReader(s.getInputStream()));
                     serveur.envoyer(read.readLine(), s);
                 }catch (NumberFormatException e1){
-                    try {
-                        serveur.addError(e1.toString());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                        e1.printStackTrace();
                 }
                 catch (IOException e2) {
-                    try {
-                        serveur.addError(e2.toString());
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                    e2.printStackTrace();
                 }
         }
 
