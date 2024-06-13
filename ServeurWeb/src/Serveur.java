@@ -16,8 +16,6 @@ public class Serveur {
                 if(serveur.validerConnexion(s.getInetAddress().getHostAddress()))s.close();
                 BufferedReader read = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 serveur.envoyer(read.readLine(), s);
-
-
             }
         } catch (IOException e) {
             e.printStackTrace();
