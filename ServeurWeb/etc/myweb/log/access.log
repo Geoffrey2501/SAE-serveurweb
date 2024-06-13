@@ -1,4 +1,7 @@
 
-Socket[addr=/0:0:0:0:0:0:0:1,port=57426,localport=80] status
-Socket[addr=/0:0:0:0:0:0:0:1,port=57433,localport=80] status
-Socket[addr=/0:0:0:0:0:0:0:1,port=57438,localport=80] status
+Socket[addr=/0:0:0:0:0:0:0:1,port=57524,localport=80] 
+Socket[addr=/0:0:0:0:0:0:0:1,port=57525,localport=80] airplane.png
+Socket[addr=/0:0:0:0:0:0:0:1,port=57527,localport=80] airplane.png
+Socket[addr=/0:0:0:0:0:0:0:1,port=57528,localport=80] 
+Socket[addr=/0:0:0:0:0:0:0:1,port=57529,localport=80] fivicon.ico
+Socket[addr=/0:0:0:0:0:0:0:1,port=57536,localport=80] airplane.png
