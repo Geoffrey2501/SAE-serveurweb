@@ -18,7 +18,7 @@ public class Serveur {
                 try {
                     s = serveur.serverSocket.accept();
                     System.out.println(s.getInetAddress().toString());
-                    if(serveur.validerConnexion(s.getInetAddress().getHostAddress()))s.close();
+                    //if(serveur.validerConnexion(s.getInetAddress().getHostAddress()))s.close();
                     BufferedReader read = new BufferedReader(new InputStreamReader(s.getInputStream()));
                     serveur.envoyer(read.readLine(), s);
                 }catch (NumberFormatException e1){
