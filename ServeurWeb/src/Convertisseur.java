@@ -5,7 +5,7 @@ import java.util.Base64;
 
 public class Convertisseur {
     public String convertir(String name) throws IOException {
-        byte[] fileContent = Files.readAllBytes(Paths.get(name));
+        byte[] fileContent = Files.readAllBytes(Paths.get("etc/"+name));
         String encodedString = Base64.getEncoder().encodeToString(fileContent);
         return encodedString;
     }
