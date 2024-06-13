@@ -42,8 +42,12 @@ public class ServeurHTTP {
         String res = s.replace("GET /", "").replace(" HTTP/1.1", "").trim();
         FileInputStream r = null;
         try {
-            if (res.isEmpty()) r = new FileInputStream("etc/index.html");
-            else r = new FileInputStream("etc/" + res);
+            String name;
+            if (res.isEmpty()) name = "etc/index.html";
+            else name = "etc/" + res;
+
+            LireDisque.ecrireInfo(name);
+            r = new FileInputStream(name);
             DataOutputStream out = new DataOutputStream(soc.getOutputStream());
             int byteRead;
             while ((byteRead = r.read()) != -1) {

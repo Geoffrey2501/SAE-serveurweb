@@ -1,29 +1,30 @@
-import java.io.File;
+import java.io.*;
 import java.text.NumberFormat;
 
-import javax.swing.filechooser.FileSystemView;
-
 public class LireDisque {
+    public static NumberFormat nf = NumberFormat.getInstance();
+
+    /**
+     * Fonction qui récupère les informations sur la machines est les écrite dans une page donnée
+     */
+    public static void ecrireInfo(String f) throws IOException {
+
+        BufferedWriter b = new BufferedWriter(new FileWriter(f));
 
 
-    public static void main(String[] args)
-    {
+        double nbProc = Runtime.getRuntime().availableProcessors();
+        String memory = formatSize(Runtime.getRuntime().freeMemory());
+        b.write(String.valueOf(nbProc));
+        b.write(memory);
         File[] roots = File.listRoots();
-        for (File root : roots) printInfos(root);
+        for (File root : roots) {
+            String name = root.getAbsolutePath();
+            String space = formatSize(root.getFreeSpace());
+            b.write(name+" : "+ space);
+        }
+
+        b.close();
     }
-
-
-    public static void printInfos(File root)
-    {
-        System.out.println("path: "+root.getAbsolutePath());
-        System.out.println("drive: "+driveLetter(root));
-        System.out.println("name: "+name(root));
-        System.out.println("totalSpace: "+formatSize(root.getTotalSpace()));
-        System.out.println("freeSpace: "+formatSize(root.getFreeSpace()));
-        System.out.println();
-    }
-
-
 
     public static String formatSize(Long size)
     {
@@ -31,23 +32,6 @@ public class LireDisque {
         return nf.format(sizeMO)+" Mo";
     }
 
-    public static String driveLetter(File root)
-    {
-        String path = root.getAbsolutePath();
-        if(path.contains(":")) return path.split(":")[0];
-        return "";
-    }
 
-    public static String name(File root)
-    {
-        String n = f.getSystemDisplayName(root);
-        if(n.isEmpty() || n.equals("/")) return "";
-        String p = root.getAbsolutePath().substring(0,2);
-        if(n.endsWith("("+p+")")) n = n.substring(0,n.length()-p.length());
-        return n;
-    }
-
-    public static FileSystemView f = FileSystemView.getFileSystemView();
-    public static NumberFormat nf = NumberFormat.getInstance();
 
 }
