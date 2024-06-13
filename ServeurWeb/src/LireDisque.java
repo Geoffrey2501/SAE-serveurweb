@@ -14,14 +14,18 @@ public class LireDisque {
 
         double nbProc = Runtime.getRuntime().availableProcessors();
         String memory = formatSize(Runtime.getRuntime().freeMemory());
-        b.write(String.valueOf(nbProc));
-        b.write(memory);
+        b.write("Nombre de processus : "+String.valueOf(nbProc));
+        b.newLine();
+        b.write("Mémoire disponible : "+memory);
         File[] roots = File.listRoots();
         for (File root : roots) {
+            b.newLine();
             String name = root.getAbsolutePath();
             String space = formatSize(root.getFreeSpace());
-            b.write(name+" : "+ space);
+            b.write("Nom disque : "+name+" / espace disponible :"+ space);
         }
+
+
 
         b.close();
     }
