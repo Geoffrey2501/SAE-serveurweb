@@ -1,3 +1,4 @@
 
-Socket[addr=/0:0:0:0:0:0:0:1,port=51360,localport=80] index.html
-Socket[addr=/0:0:0:0:0:0:0:1,port=51361,localport=80] favicon.ico
+Socket[addr=/0:0:0:0:0:0:0:1,port=57426,localport=80] status
+Socket[addr=/0:0:0:0:0:0:0:1,port=57433,localport=80] status
+Socket[addr=/0:0:0:0:0:0:0:1,port=57438,localport=80] status
