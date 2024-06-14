@@ -52,7 +52,7 @@ public class ServeurHTTP {
      * @param soc la socket
      * @throws IOException
      */
-    public void envoyer(String s, Socket soc) throws IOException {
+    public void envoyer(String s, Socket soc) throws IOException, InterruptedException {
         String res = s.replace("GET /", "").replace(" HTTP/1.1", "").trim();
         this.addLogin(soc.toString(), res);
         try {
@@ -78,7 +78,7 @@ public class ServeurHTTP {
                     out.write("\n".getBytes("UTF-8"));
                     out.flush();
                 }
-                if(line.contains("<source")){
+                else if(line.contains("<source")){
                     line = line.replace("<source", "").trim();
                     line = line.replace("src=\"", "");
                     line = line.replace("\">", "").trim();
@@ -86,6 +86,40 @@ public class ServeurHTTP {
                     String o = this.c.convertir(line);
                     out.write(("<source src=\"data:video/mp4;base64,"+o+"\" >" ).getBytes("UTF-8"));
                     out.write("\n".getBytes("UTF-8"));
+                    out.flush();
+                }
+                else if(line.contains("<code") && line.contains("bash")){
+                    line = line.replace("La date est ", "").trim();
+                    line = line.replace("<code interpreteur=«/bin/bash»>", "").trim();
+                    line = line.replace("</code>", "").trim();
+                    System.out.println(line);
+
+                    ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "LC_TIME=fr_FR.UTF-8 "+line+" '+%A %d %B %Y, %T(UTC%z)'");
+                    Process process = processBuilder.start();
+
+                    BufferedReader r = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    StringBuilder result = new StringBuilder();
+                    String l;
+                    while ((l = r.readLine()) != null) {
+                        result.append(l).append("\n");
+                    }
+                    process.waitFor();
+                    System.out.println(result.toString());
+                    out.write(("La date est " + result).getBytes());
+                    out.flush();
+                }
+                else if(line.contains("<code") && line.contains("python")){
+                    ProcessBuilder processBuilder = new ProcessBuilder("python");
+                    Process process = processBuilder.start();
+                    BufferedReader r = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    StringBuilder output = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        if(line.contains("</code>"))break;
+                        output.append(line).append("\n");
+                    }
+                    process.waitFor();
+                    System.out.println(output.toString());
+                    out.write(("La date est " + output).getBytes());
                     out.flush();
                 }
                 else {

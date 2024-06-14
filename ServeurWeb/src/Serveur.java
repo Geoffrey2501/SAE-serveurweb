@@ -24,7 +24,7 @@ public class Serveur {
                 }catch (NumberFormatException e1){
                         e1.printStackTrace();
                 }
-                catch (IOException e2) {
+                catch (IOException | InterruptedException e2) {
                     e2.printStackTrace();
                 }
         }
