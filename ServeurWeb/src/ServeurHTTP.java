@@ -52,20 +52,19 @@ public class ServeurHTTP {
      * @param soc la socket
      * @throws IOException
      */
-    public void envoyer(String s, Socket soc) throws IOException, InterruptedException {
+    public void envoyer(String s, Socket soc) throws Exception {
         String res = s.replace("GET /", "").replace(" HTTP/1.1", "").trim();
         this.addLogin(soc.toString(), res);
+        String name;
+        if (res.isEmpty()) name = "etc/index.html";
+        else name = "etc/" + res;
+
+        if (name.equals("etc/status")) LireDisque.ecrireInfo(name);
+        BufferedReader reader;
+        DataOutputStream out= new DataOutputStream(soc.getOutputStream());
+
         try {
-            String name;
-            if (res.isEmpty()) name = "etc/index.html";
-            else name = "etc/" + res;
-            System.out.println(soc.isClosed());
-
-
-            if (name.equals("etc/status")) LireDisque.ecrireInfo(name);
-
-            BufferedReader reader = new BufferedReader(new FileReader(name));
-            DataOutputStream out = new DataOutputStream(soc.getOutputStream());
+            reader = new BufferedReader(new FileReader(name));
             String line;
             while ((line = reader.readLine()) != null) {
                 if(line.contains("<img")){
@@ -135,7 +134,16 @@ public class ServeurHTTP {
 
 
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            out.write(("HTTP/1.1 404 Not Found\r\n").toString().getBytes("UTF-8"));
+            out.flush();
+            out.write(("Content-Type: text/html\r\n").toString().getBytes("UTF-8"));
+            out.flush();
+            out.write(("\r\n").toString().getBytes("UTF-8"));
+            out.flush();
+            out.write(("<html><body><h1>404 Not Found</h1></body></html>\r\n").toString().getBytes("UTF-8"));
+            out.flush();
+            out.close();
+            this.addError("404 Not Found :"+name);
         }
     }
 

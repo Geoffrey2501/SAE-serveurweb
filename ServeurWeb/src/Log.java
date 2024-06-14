@@ -15,10 +15,15 @@ public class Log {
         }
     }
 
-    public void ajout(String msg) throws IOException {
-        bf.newLine();
-        bf.write(msg);
-        bf.flush();
+    public void ajout(String msg) {
+        try {
+            bf.newLine();
+            bf.write(msg);
+            bf.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 
