@@ -1,0 +1,66 @@
+class ServeurHTTP {
+  
+
+    int port
+        Socket s
+        byte[] page
+        ServerSocket serverSocket
+        Log acces
+        Log erreur
+        Convertisseur c
+        byte[] masque
+        String[][] supp
+        byte[] ipOK
+        byte[] ipBan
+
+
+  + ServeurHTTP() throws IOException
+  + void envoyer(String s, Socket soc) throws Exception
+  + void lireConfig(String path) throws IOException
+  + boolean validerConnexion(String ip)
+  + void addLogin(String ip, String page) throws IOException
+  + void addError(String error) throws IOException
+  + byte[] toBinaire(String ip)
+  + String voirIP(byte[] ip)
+  + String toString()
+  + static List<String> splitString(String input, int length)
+}
+
+class Log {
+-name : String
+-bf : bufferedWriter
+  + Log(String filePath)
+  + void ajout(String entry) throws IOException
+}
+
+class Convertisseur {
+  + String convertir(String input)
+}
+
+class LireDisque {
+  -nf:NumberFormat
+  + static void ecrireInfo(String info)
+}
+class Serveur {
+  
+
+    int port
+        static Socket s
+        byte[] page
+
+
+  + static void main(String[] args) throws IOException
+}
+class Executer{
+  -executeCode(interpreter: String, code: String) : String
+  
+
+    extractCodeSnippets(String input) : String
+
+}
+ServeurHTTP --> Executer : execute
+Serveur ..> ServeurHTTP : serveur
+ServeurHTTP --> Log : acces
+ServeurHTTP --> Log : erreur
+ServeurHTTP --> Convertisseur : c
+ServeurHTTP ..> LireDisque : utiliser

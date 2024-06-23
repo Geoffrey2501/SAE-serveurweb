@@ -1,0 +1,9 @@
+Pendant cette SAÉ, nous avons été confrontés à plusieurs défis techniques essentiels. La configuration de Linux sur nos systèmes a été particulièrement complexe, nécessitant une compréhension approfondie des configurations système et des permissions pour assurer un environnement stable. De plus, la création d'un package Debian sans assistance extérieure, nous a empêche de le faire.
+
+Un autre défi majeur a été la gestion des adresses IP. Nos ordinateurs utilisant IPv6 alors que notre serveur était configuré en IPv4 ont généré des incompatibilités, nécessitant une coordination étroite pour aligner les paramètres réseau et assurer une connectivité fluide.
+
+En parallèle, l'acquisition de nouvelles compétences techniques et la consultation de documentation ont été cruciales pour résoudre ces problèmes. Cela a renforcé notre compréhension collective des technologies impliquées et amélioré notre efficacité dans la résolution des défis rencontrés.
+
+La gestion efficace du temps et des ressources a été un autre aspect clé de notre travail. En équilibrant les exigences du projet avec nos capacités et délais, nous avons pu avancer de manière productive malgré les obstacles rencontrés.
+
+En conclusion, bien que cette SAÉ ait été ponctuée de défis techniques et organisationnels, elle nous a offert des opportunités précieuses d'apprentissage et de croissance. Notre capacité à collaborer et à surmonter ces défis a renforcé notre cohésion d'équipe et nous a permis de progresser vers nos objectifs avec confiance et compétence.

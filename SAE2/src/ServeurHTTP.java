@@ -1,11 +1,8 @@
 import java.io.*;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ServeurHTTP {
     int port;
@@ -41,7 +38,7 @@ public class ServeurHTTP {
      * @throws IOException
      */
     public ServeurHTTP() throws IOException {
-        this.lireConfig("etc/myweb/config.xml");
+        this.lireConfig("/etc/myweb/myweb.conf");
         this.c = new Convertisseur();
     }
 
@@ -52,19 +49,20 @@ public class ServeurHTTP {
      * @param soc la socket
      * @throws IOException
      */
-    public void envoyer(String s, Socket soc) throws Exception {
+    public void envoyer(String s, Socket soc) throws IOException, InterruptedException {
         String res = s.replace("GET /", "").replace(" HTTP/1.1", "").trim();
         this.addLogin(soc.toString(), res);
-        String name;
-        if (res.isEmpty()) name = "etc/index.html";
-        else name = "etc/" + res;
-
-        if (name.equals("etc/status")) LireDisque.ecrireInfo(name);
-        BufferedReader reader;
-        DataOutputStream out= new DataOutputStream(soc.getOutputStream());
-
         try {
-            reader = new BufferedReader(new FileReader(name));
+            String name;
+            if (res.isEmpty()) name = "etc/index.html";
+            else name = "etc/" + res;
+            System.out.println(soc.isClosed());
+
+
+            if (name.equals("etc/status")) LireDisque.ecrireInfo(name);
+
+            BufferedReader reader = new BufferedReader(new FileReader(name));
+            DataOutputStream out = new DataOutputStream(soc.getOutputStream());
             String line;
             while ((line = reader.readLine()) != null) {
                 if(line.contains("<img")){
@@ -134,16 +132,7 @@ public class ServeurHTTP {
 
 
         } catch (FileNotFoundException e) {
-            out.write(("HTTP/1.1 404 Not Found\r\n").toString().getBytes("UTF-8"));
-            out.flush();
-            out.write(("Content-Type: text/html\r\n").toString().getBytes("UTF-8"));
-            out.flush();
-            out.write(("\r\n").toString().getBytes("UTF-8"));
-            out.flush();
-            out.write(("<html><body><h1>404 Not Found</h1></body></html>\r\n").toString().getBytes("UTF-8"));
-            out.flush();
-            out.close();
-            this.addError("404 Not Found :"+name);
+            throw new RuntimeException(e);
         }
     }
 
